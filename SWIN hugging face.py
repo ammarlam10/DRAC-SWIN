@@ -224,7 +224,7 @@ trainer = Trainer(
     args=training_args,
     data_collator=collate_fn,
     compute_metrics=compute_metrics,
-    callbacks = [EarlyStoppingCallback(early_stopping_patience=3)]
+    callbacks = [EarlyStoppingCallback(early_stopping_patience=3)],
     train_dataset=prepared_ds["train"],
     eval_dataset=prepared_ds["train"],
     tokenizer=feature_extractor,
