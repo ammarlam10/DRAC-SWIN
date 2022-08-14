@@ -201,11 +201,11 @@ training_args = TrainingArguments(
     load_best_model_at_end=True,
     metric_for_best_model="accuracy",
     push_to_hub=False,
-    #sharded_ddp=True,
     per_device_train_batch_size=4,
     fp16=True,
 )
 
+#sharded_ddp=True,
 
 # In[34]:
 
