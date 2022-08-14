@@ -27,6 +27,12 @@ from datasets.tasks import ImageClassification
 from PIL import Image
 
 
+from os import listdir
+from os.path import isfile, join
+
+
+
+
 _CITATION = """\
 @TECHREPORT{Krizhevsky09learningmultiple,
     author = {Alex Krizhevsky},
@@ -79,7 +85,7 @@ class DRG(datasets.GeneratorBasedBuilder):
     def _split_generators(self, dl_manager):
         
         return [
-        datasets.SplitGenerator(name=datasets.Split.TRAIN, gen_kwargs={"filepath": '/home/ammar/Desktop/LMU/ADL/data/C. Diabetic Retinopathy Grading/1. Original Images/a. Training Set/'}),
+        datasets.SplitGenerator(name=datasets.Split.TRAIN, gen_kwargs={"filepath": '/home/ammar/Desktop/LMU/ADL/data/test/C. Diabetic Retinopathy Grading/1. Original Images/b. Testing Set/'}),
         # datasets.SplitGenerator(name=datasets.Split.VALIDATION, gen_kwargs={"filepath": '/home/ammar/Desktop/LMU/ADL/data/C. Diabetic Retinopathy Grading/1. Original Images/a. Training Set/'}),
         ]
 
@@ -97,23 +103,27 @@ class DRG(datasets.GeneratorBasedBuilder):
 
     def _generate_examples(color, *args,**kwargs):
             """Generate images and labels for splits."""
-            #imgfolder = '/home/ammar/Desktop/LMU/ADL/data/test/C. Diabetic Retinopathy Grading/1. Original Images/a. Training Set'
+            imgfolder = '/home/ammar/Desktop/LMU/ADL/data/test/C. Diabetic Retinopathy Grading/1. Original Images/b. Testing Set/'
             #csv_path = '/home/ammar/Desktop/LMU/ADL/data/test/C. Diabetic Retinopathy Grading/2. Groundtruths/a. DRAC2022_ Diabetic Retinopathy Grading_Training Labels.csv'
             
-            imgfolder = '/dss/dsshome1/lxc0C/ra49bid2//DATA2/C. Diabetic Retinopathy Grading/1. Original Images/a. Training Set'
-            csv_path = '/dss/dsshome1/lxc0C/ra49bid2//DATA2/C. Diabetic Retinopathy Grading/2. Groundtruths/a. DRAC2022_ Diabetic Retinopathy Grading_Training Labels.csv'
+           # imgfolder = '/dss/dsshome1/lxc0C/ra49bid2//DATA2/C. Diabetic Retinopathy Grading/1. Original Images/a. Training Set'
+           # csv_path = '/dss/dsshome1/lxc0C/ra49bid2//DATA2/C. Diabetic Retinopathy Grading/2. Groundtruths/a. DRAC2022_ Diabetic Retinopathy Grading_Training Labels.csv'
             
 
-            df= pd.read_csv(csv_path)
-            print(df.shape)
-            for k,v in df.iterrows():
+            #df= pd.read_csv(csv_path)
+            #print(df.shape)
+            onlyfiles = [f for f in listdir(imgfolder) if isfile(join(imgfolder, f))]
+            #print(onlyfiles)
+            count = 0
+            for v in onlyfiles:
+                count += 1
                 # print(v['image name'])
                 # print(v['DR grade'])
                 # print('{}/{}'.format(imgfolder,v['image name']))
-                im = Image.open('{}/{}'.format(imgfolder,v['image name'])).convert('RGB')
+                im = Image.open('{}/{}'.format(imgfolder,v)).convert('RGB')
     #             break
 
-                yield v['image name'], {
+                yield count, {
                                 "img": im,
-                                "label": v['DR grade'],
+                                "label":0
                             }
