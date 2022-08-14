@@ -195,13 +195,15 @@ training_args = TrainingArguments(
     per_device_train_batch_size=batch_size,
     gradient_accumulation_steps=4,
     per_device_eval_batch_size=batch_size,
-    num_train_epochs=12,
+    num_train_epochs=30,
     warmup_ratio=0.1,
     logging_steps=10,
     load_best_model_at_end=True,
     metric_for_best_model="accuracy",
     push_to_hub=False,
-    sharded_ddp=True,
+    #sharded_ddp=True,
+    per_device_train_batch_size=4,
+    fp16=True,
 )
 
 
