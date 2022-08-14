@@ -200,7 +200,7 @@ training_args = TrainingArguments(
     warmup_ratio=0.1,
     logging_steps=10,
     load_best_model_at_end=True,
-    metric_for_best_model="accuracy",
+    metric_for_best_model="f1",
     push_to_hub=False,
     fp16=True,
 )
@@ -245,7 +245,7 @@ trainer.save_state()
 
 
 # Evaluate on validation set
-metrics = trainer.evaluate(prepared_ds['validation'])
+metrics = trainer.evaluate(prepared_ds['train'])
 trainer.log_metrics("eval", metrics)
 trainer.save_metrics("eval", metrics)
 
