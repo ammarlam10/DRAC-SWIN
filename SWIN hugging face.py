@@ -26,8 +26,6 @@ from datasets import load_metric
 from datasets import load_dataset
 from transformers import SwinForImageClassification, Trainer, TrainingArguments
 
-from transformers import Trainer, 
-
 from transformers import EarlyStoppingCallback, IntervalStrategy
 
 # In[3]:
