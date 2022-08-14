@@ -26,7 +26,9 @@ from datasets import load_metric
 from datasets import load_dataset
 from transformers import SwinForImageClassification, Trainer, TrainingArguments
 
-from transformers import Trainer, TrainingArguments
+from transformers import Trainer, 
+
+from transformers import EarlyStoppingCallback, IntervalStrategy
 
 # In[3]:
 
@@ -189,13 +191,14 @@ batch_size = 16
 training_args = TrainingArguments(
     f"swin-finetuned-DRG",
     remove_unused_columns=False,
-    evaluation_strategy = "epoch",
+    evaluation_strategy = "steps",
     save_strategy = "epoch",
     learning_rate=5e-5,
+    eval_steps = 10,
     per_device_train_batch_size=batch_size,
     gradient_accumulation_steps=4,
     per_device_eval_batch_size=batch_size,
-    num_train_epochs=30,
+    num_train_epochs=60,
     warmup_ratio=0.1,
     logging_steps=10,
     load_best_model_at_end=True,
@@ -221,6 +224,7 @@ trainer = Trainer(
     args=training_args,
     data_collator=collate_fn,
     compute_metrics=compute_metrics,
+    callbacks = [EarlyStoppingCallback(early_stopping_patience=3)]
     train_dataset=prepared_ds["train"],
     eval_dataset=prepared_ds["train"],
     tokenizer=feature_extractor,
