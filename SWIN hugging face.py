@@ -190,7 +190,7 @@ training_args = TrainingArguments(
     f"swin-finetuned-DRG",
     remove_unused_columns=False,
     evaluation_strategy = "steps",
-    save_strategy = "epoch",
+    save_strategy = "steps",
     learning_rate=5e-5,
     eval_steps = 10,
     per_device_train_batch_size=batch_size,
