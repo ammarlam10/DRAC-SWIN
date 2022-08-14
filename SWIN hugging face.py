@@ -31,8 +31,8 @@ from transformers import Trainer, TrainingArguments
 # In[3]:
 
 
-#p ='~/ammar/SWIN/DRG_huggingface/'
-p ='/dss/dsshome1/lxc0C/ra49bid2/ammar/SWIN/DRG_huggingface'
+p ='../DRG_huggingface/'
+#p ='/dss/dsshome1/lxc0C/ra49bid2/ammar/SWIN/DRG_huggingface'
 
 # In[4]:
 
@@ -189,14 +189,13 @@ batch_size = 16
 training_args = TrainingArguments(
     f"swin-finetuned-DRG",
     remove_unused_columns=False,
-    _n_gpu=2,
     evaluation_strategy = "epoch",
     save_strategy = "epoch",
     learning_rate=5e-5,
     per_device_train_batch_size=batch_size,
     gradient_accumulation_steps=4,
     per_device_eval_batch_size=batch_size,
-    num_train_epochs=30,
+    num_train_epochs=12,
     warmup_ratio=0.1,
     logging_steps=10,
     load_best_model_at_end=True,
