@@ -4,7 +4,7 @@ from transformers import AutoFeatureExtractor
 import torch
 import numpy as np
 from datasets import load_metric
-
+import pickle
 # In[2]:
 
 from datasets import load_dataset
@@ -59,4 +59,9 @@ trainer = Trainer(
     tokenizer=feature_extractor,
 )
 
-output = trainer.evaluate(prepared_ds['train'])
+output = trainer.predictions(prepared_ds['train'])
+
+file = open('./output', 'wb')
+
+# dump information to that file
+pickle.dump(output, file)

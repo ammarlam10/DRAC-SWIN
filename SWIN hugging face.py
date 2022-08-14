@@ -184,10 +184,10 @@ model = SwinForImageClassification.from_pretrained(
 for param in model.swin.parameters():
     param.requires_grad = False
 
-batch_size = 32
+batch_size = 64
 # Defining training arguments (set push_to_hub to false if you don't want to upload it to HuggingFace's model hub)
 training_args = TrainingArguments(
-    f"swin-finetuned-DRG",
+    f"swin-finetuned-grading",
     remove_unused_columns=False,
     evaluation_strategy = "steps",
     save_strategy = "steps",
@@ -196,7 +196,7 @@ training_args = TrainingArguments(
     per_device_train_batch_size=batch_size,
     gradient_accumulation_steps=4,
     per_device_eval_batch_size=batch_size,
-    num_train_epochs=40,
+    num_train_epochs=50,
     warmup_ratio=0.1,
     logging_steps=10,
     load_best_model_at_end=True,
@@ -222,7 +222,7 @@ trainer = Trainer(
     args=training_args,
     data_collator=collate_fn,
     compute_metrics=compute_metrics,
-    callbacks = [EarlyStoppingCallback(early_stopping_patience=3)],
+   # callbacks = [EarlyStoppingCallback(early_stopping_patience=3)],
     train_dataset=prepared_ds["train"],
     eval_dataset=prepared_ds["train"],
     tokenizer=feature_extractor,

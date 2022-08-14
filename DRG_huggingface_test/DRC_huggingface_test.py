@@ -113,14 +113,14 @@ class DRG(datasets.GeneratorBasedBuilder):
             #df= pd.read_csv(csv_path)
             #print(df.shape)
             onlyfiles = [f for f in listdir(imgfolder) if isfile(join(imgfolder, f))]
-            print(onlyfiles[0])
+            print('Total image', len(onlyfiles))
             count = 0
             for v in onlyfiles:
                 count += 1
                 # print(v['image name'])
                 # print(v['DR grade'])
                 # print('{}/{}'.format(imgfolder,v['image name']))
-                im = Image.open('{}/{}'.format(imgfolder,v)).convert('RGB')
+                im = Image.open('{}/{}'.format(imgfolder,v))
     #             break
 
                 yield count, {
