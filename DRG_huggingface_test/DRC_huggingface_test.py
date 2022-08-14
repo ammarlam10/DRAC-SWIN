@@ -103,7 +103,7 @@ class DRG(datasets.GeneratorBasedBuilder):
 
     def _generate_examples(color, *args,**kwargs):
             """Generate images and labels for splits."""
-            imgfolder = '/home/ammar/Desktop/LMU/ADL/data/test/C. Diabetic Retinopathy Grading/1. Original Images/b. Testing Set/'
+            imgfolder = '/dss/dsshome1/lxc0C/ra49bid2/DATA2/test/C. Diabetic Retinopathy Grading/1. Original Images/b. Testing Set/'
             #csv_path = '/home/ammar/Desktop/LMU/ADL/data/test/C. Diabetic Retinopathy Grading/2. Groundtruths/a. DRAC2022_ Diabetic Retinopathy Grading_Training Labels.csv'
             
            # imgfolder = '/dss/dsshome1/lxc0C/ra49bid2//DATA2/C. Diabetic Retinopathy Grading/1. Original Images/a. Training Set'
