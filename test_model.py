@@ -24,9 +24,9 @@ feature_extractor = AutoFeatureExtractor.from_pretrained(model_name)
 
 model = SwinForImageClassification.from_pretrained(
     model_name,
-    num_labels=len(labels),
-    id2label={str(i): c for i, c in enumerate(labels)},
-    label2id={c: str(i) for i, c in enumerate(labels)},
+    num_labels=3,
+    id2label={'0': '0', '1': '1', '2': '2'},
+    label2id={'0': '0', '1': '1', '2': '2'},
     ignore_mismatched_sizes = True,
 )
 batch_size = 32
