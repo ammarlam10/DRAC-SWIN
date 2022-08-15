@@ -63,6 +63,16 @@ def transform(example_batch):
     inputs['label'] = example_batch['label']
     return inputs
   
+
+
+def collate_fn(batch):
+  #data collator
+
+    return {
+  #      'pixel_values': torch.stack([x['pixel_value'] for x in batch]),
+        'pixel_values': torch.stack([x['pixel_values'] for x in batch]),
+        'labels': torch.tensor([x['label'] for x in batch])
+    }  
 # applying transform
 prepared_ds = ds.with_transform(transform)
 
