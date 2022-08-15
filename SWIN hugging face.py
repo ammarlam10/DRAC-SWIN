@@ -113,7 +113,7 @@ model = SwinForImageClassification.from_pretrained(
 
 
 # In[33]:
-for param in model.swin.embeddings.parameters()
+for param in model.swin.embeddings.parameters():
     param.requires_grad = False
 
 for param in model.swin.encoder.parameters():
