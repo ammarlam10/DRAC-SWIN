@@ -85,7 +85,7 @@ trainer = Trainer(
     tokenizer=feature_extractor,
 )
 
-output = trainer.predictions(prepared_ds['train'])
+output = trainer.predict(prepared_ds['train'])
 
 file = open('./output', 'wb')
 
