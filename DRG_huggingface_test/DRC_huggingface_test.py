@@ -123,7 +123,7 @@ class DRG(datasets.GeneratorBasedBuilder):
                 im = Image.open('{}/{}'.format(imgfolder,v))
     #             break
 
-                yield v, {
+                yield count, {
                                 "img": im,
                                 "label":0
                             }
