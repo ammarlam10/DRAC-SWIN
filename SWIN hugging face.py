@@ -113,9 +113,11 @@ model = SwinForImageClassification.from_pretrained(
 
 
 # In[33]:
+for param in model.swin.embeddings.parameters()
+    param.requires_grad = False
 
-#for param in model.swin.parameters():
-#    param.requires_grad = False
+for param in model.swin.encoder.parameters():
+    param.requires_grad = False
 
 batch_size = 8
 # Defining training arguments (set push_to_hub to false if you don't want to upload it to HuggingFace's model hub)
