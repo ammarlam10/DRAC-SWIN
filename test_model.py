@@ -17,7 +17,7 @@ p ='/dss/dsshome1/lxc0C/ra49bid2/ammar/DRAC-SWIN/DRG_huggingface_test/DRC_huggin
 
 ds = load_dataset(p)
 
-model_name = '/dss/dsshome1/lxc0C/ra49bid2/ammar/DRAC-SWIN/swin-finetuned-DRG/'
+model_name = '/dss/dsshome1/lxc0C/ra49bid2/ammar/DRAC-SWIN/swin-finetuned-grading/'
 feature_extractor = AutoFeatureExtractor.from_pretrained(model_name)
 
 
