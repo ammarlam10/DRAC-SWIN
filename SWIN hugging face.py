@@ -131,7 +131,6 @@ training_args = TrainingArguments(
     remove_unused_columns=False,
     evaluation_strategy = "steps",
     save_strategy = "steps",
-    optimizers=(optimizer, lr_scheduler),
     #learning_rate=scheduler,
     eval_steps = 10,
     per_device_train_batch_size=batch_size,
@@ -161,6 +160,7 @@ training_args = TrainingArguments(
 trainer = Trainer(
     model=model,
     args=training_args,
+    optimizers=(optimizer, lr_scheduler),
     data_collator=collate_fn,
     compute_metrics=compute_metrics,
    # callbacks = [EarlyStoppingCallback(early_stopping_patience=3)],
