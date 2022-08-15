@@ -113,7 +113,7 @@ class DRG(datasets.GeneratorBasedBuilder):
             #df= pd.read_csv(csv_path)
             #print(df.shape)
             onlyfiles = [f for f in listdir(imgfolder) if isfile(join(imgfolder, f))]
-            print('Total image', len(onlyfiles))
+            print(len(onlyfiles))
             count = 0
             for v in onlyfiles:
                 count += 1
