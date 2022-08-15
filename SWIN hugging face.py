@@ -34,84 +34,17 @@ from transformers import EarlyStoppingCallback, IntervalStrategy
 p ='/dss/dsshome1/lxc0C/ra49bid2/ammar/DRAC-SWIN/DRG_huggingface'
 #p ='/dss/dsshome1/lxc0C/ra49bid2/ammar/SWIN/DRG_huggingface'
 
-# In[4]:
-
-
-# import pandas as pd
-# def generate_examples(filepath):
-#         """Generate images and labels for splits."""
-#         imgfolder = '/home/ammar/Desktop/LMU/ADL/data/C. Diabetic Retinopathy Grading/1. Original Images/a. Training Set'
-#         csv_path = '/home/ammar/Desktop/LMU/ADL/data/C. Diabetic Retinopathy Grading/2. Groundtruths/a. DRAC2022_ Diabetic Retinopathy Grading_Training Labels.csv'
-#         df= pd.read_csv(csv_path)
-#         print(df.shape)
-#         for k,v in df.iterrows():
-# #             print(v['image name'])
-# #             print(v['DR grade'])
-# #             print('{}/{}'.format(imgfolder,v['image name']))
-#             im = Image.open('{}/{}'.format(imgfolder,v['image name'])).convert('RGB')
-# #             break
-
-#             yield v['image name'], {
-#                             "image": im,
-#                             "label": v['DR grade'],
-#                         }
-
-
-# In[5]:
-
 
 ds = load_dataset(p)
 
 
-# In[ ]:
-
-
-# loading the dataset
-# ds = load_dataset('Maysee/tiny-imagenet', split='valid')
-
-# getting an example
-
-
-# In[6]:
-
-
 print(ds)
-
-
-# In[8]:
-
-
-#ds['train'][400]
-
-
-# In[9]:
-
-
-#ex = ds['train'][400]
-#print(ex)
-
-# seeing the image
-#image = ex['img']
-#image.show()
-
-
-# In[13]:
 
 
 
 # getting all the labels
 labels = ds['train']['label']
 print(labels)
-
-
-# In[15]:
-
-
-# getting label of our example
-# print(labels.int2str(ex['label']))
-
-
-# In[16]:
 
 
 
@@ -157,7 +90,7 @@ def collate_fn(batch):
 
 
 
-metric = load_metric("accuracy")
+metric = load_metric("f1")
 def compute_metrics(p):
   # function which calculates accuracy for a certain set of predictions
   return metric.compute(predictions=np.argmax(p.predictions, axis=1), references=p.label_ids)
@@ -196,7 +129,7 @@ training_args = TrainingArguments(
     per_device_train_batch_size=batch_size,
     gradient_accumulation_steps=4,
     per_device_eval_batch_size=batch_size,
-    num_train_epochs=50,
+    num_train_epochs=10,
     warmup_ratio=0.1,
     logging_steps=10,
     load_best_model_at_end=True,
