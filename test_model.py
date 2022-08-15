@@ -51,6 +51,22 @@ training_args = TrainingArguments(
     fp16=True,
 )
 
+metric = load_metric("accuracy")
+def compute_metrics(p):
+  # function which calculates accuracy for a certain set of predictions
+  return metric.compute(predictions=np.argmax(p.predictions, axis=1), references=p.label_ids)
+
+
+def transform(example_batch):
+    # Take a list of PIL images and turn them to pixel values
+    inputs = feature_extractor([x.convert('RGB') for x in example_batch['img']], return_tensors='pt')
+    inputs['label'] = example_batch['label']
+    return inputs
+  
+# applying transform
+prepared_ds = ds.with_transform(transform)
+
+
 trainer = Trainer(
     model=model,
     args=training_args,
