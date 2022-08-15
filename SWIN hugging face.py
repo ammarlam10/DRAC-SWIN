@@ -15,7 +15,7 @@
 import datasets
 from transformers import AutoFeatureExtractor
 import torch
-
+torch.cuda.empty_cache()
 
 import numpy as np
 from datasets import load_metric
