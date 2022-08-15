@@ -90,7 +90,7 @@ def collate_fn(batch):
 
 
 
-metric = load_metric("f1")
+metric = load_metric("roc_auc")
 def compute_metrics(p):
   # function which calculates accuracy for a certain set of predictions
   return metric.compute(predictions=np.argmax(p.predictions, axis=1), references=p.label_ids)
