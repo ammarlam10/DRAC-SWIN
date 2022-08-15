@@ -19,6 +19,7 @@ torch.cuda.empty_cache()
 
 import numpy as np
 from datasets import load_metric
+from torch.optim.lr_scheduler import ExponentialLR
 
 # In[2]:
 
@@ -116,17 +117,18 @@ model = SwinForImageClassification.from_pretrained(
 for param in model.swin.embeddings.parameters():
     param.requires_grad = False
 
-for param in model.swin.encoder.parameters():
-    param.requires_grad = False
+#for param in model.swin.encoder.parameters():
+#   param.requires_grad = False
 
 batch_size = 8
+scheduler = ExponentialLR(optimizer, gamma=0.9)
 # Defining training arguments (set push_to_hub to false if you don't want to upload it to HuggingFace's model hub)
 training_args = TrainingArguments(
     f"swin-finetuned-quality",
     remove_unused_columns=False,
     evaluation_strategy = "steps",
     save_strategy = "steps",
-    learning_rate=5e-5,
+    learning_rate=scheduler,
     eval_steps = 10,
     per_device_train_batch_size=batch_size,
     gradient_accumulation_steps=1,
