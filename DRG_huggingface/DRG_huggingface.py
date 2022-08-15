@@ -97,11 +97,11 @@ class DRG(datasets.GeneratorBasedBuilder):
 
     def _generate_examples(color, *args,**kwargs):
             """Generate images and labels for splits."""
-            #imgfolder = '/home/ammar/Desktop/LMU/ADL/data/C. Diabetic Retinopathy Grading/1. Original Images/a. Training Set'
-            #csv_path = '/home/ammar/Desktop/LMU/ADL/data/C. Diabetic Retinopathy Grading/2. Groundtruths/a. DRAC2022_ Diabetic Retinopathy Grading_Training Labels.csv'
+            imgfolder = '/home/ammar/Desktop/LMU/ADL/data/C. Diabetic Retinopathy Grading/1. Original Images/a. Training Set'
+            csv_path = '/home/ammar/Desktop/LMU/ADL/data/C. Diabetic Retinopathy Grading/2. Groundtruths/a. DRAC2022_ Diabetic Retinopathy Grading_Training Labels.csv'
             
-            imgfolder = '/dss/dsshome1/lxc0C/ra49bid2//DATA2/C. Diabetic Retinopathy Grading/1. Original Images/a. Training Set'
-            csv_path = '/dss/dsshome1/lxc0C/ra49bid2//DATA2/C. Diabetic Retinopathy Grading/2. Groundtruths/a. DRAC2022_ Diabetic Retinopathy Grading_Training Labels.csv'
+#            imgfolder = '/dss/dsshome1/lxc0C/ra49bid2//DATA2/C. Diabetic Retinopathy Grading/1. Original Images/a. Training Set'
+ #           csv_path = '/dss/dsshome1/lxc0C/ra49bid2//DATA2/C. Diabetic Retinopathy Grading/2. Groundtruths/a. DRAC2022_ Diabetic Retinopathy Grading_Training Labels.csv'
             
 
             df= pd.read_csv(csv_path)
@@ -110,7 +110,7 @@ class DRG(datasets.GeneratorBasedBuilder):
                 # print(v['image name'])
                 # print(v['DR grade'])
                 # print('{}/{}'.format(imgfolder,v['image name']))
-                im = Image.open('{}/{}'.format(imgfolder,v['image name'])).convert('RGB')
+                im = Image.open('{}/{}'.format(imgfolder,v['image name']))
     #             break
 
                 yield v['image name'], {
