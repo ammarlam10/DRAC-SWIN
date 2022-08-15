@@ -14,7 +14,7 @@ from transformers import EarlyStoppingCallback, IntervalStrategy
 
 
 #p ='/dss/dsshome1/lxc0C/ra49bid2/ammar/DRAC-SWIN/DRG_huggingface_test/DRC_huggingface_test.py'
-p ='/dss/dsshome1/lxc0C/ra49bid2/ammar/DRAC-SWIN/DRG_huggingface/DRC_huggingface.py'
+p ='/dss/dsshome1/lxc0C/ra49bid2/ammar/DRAC-SWIN/DRG_huggingface'
 
 
 ds = load_dataset(p)
