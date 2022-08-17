@@ -32,11 +32,13 @@ from transformers import EarlyStoppingCallback, IntervalStrategy
 # In[3]:
 
 
-p ='/dss/dsshome1/lxc0C/ra49bid2/ammar/DRAC-SWIN/DRG_huggingface'
+p = '/dss/dsshome1/lxc0C/ra49bid2/ammar/DRAC-SWIN/DRG_huggingface'
+p_val = '/dss/dsshome1/lxc0C/ra49bid2/ammar/DRAC-SWIN/DRG_huggingface_val'
 #p ='/dss/dsshome1/lxc0C/ra49bid2/ammar/SWIN/DRG_huggingface'
 
 
 ds = load_dataset(p)
+ds_val = load_dataset(p_val)
 
 
 print(ds)
@@ -66,6 +68,8 @@ def transform(example_batch):
   
 # applying transform
 prepared_ds = ds.with_transform(transform)
+prepared_ds = ds_val.with_transform(transform)
+
 
 
 # In[18]:
@@ -127,12 +131,12 @@ lr_scheduler = AdafactorSchedule(optimizer)
 
 # Defining training arguments (set push_to_hub to false if you don't want to upload it to HuggingFace's model hub)
 training_args = TrainingArguments(
-    f"swin-finetuned-quality",
+    f"swin-finetuned-DRG",
     remove_unused_columns=False,
     evaluation_strategy = "steps",
     save_strategy = "steps",
     #learning_rate=scheduler,
-    eval_steps = 10,
+    eval_steps = 1,
     per_device_train_batch_size=batch_size,
     gradient_accumulation_steps=1,
     per_device_eval_batch_size=batch_size,
@@ -163,9 +167,9 @@ trainer = Trainer(
     optimizers=(optimizer, lr_scheduler),
     data_collator=collate_fn,
     compute_metrics=compute_metrics,
-   # callbacks = [EarlyStoppingCallback(early_stopping_patience=3)],
+    callbacks = [EarlyStoppingCallback(early_stopping_patience=2)],
     train_dataset=prepared_ds["train"],
-    eval_dataset=prepared_ds["train"],
+    eval_dataset=prepared_ds_val["train"],
     tokenizer=feature_extractor,
 )
 
@@ -186,7 +190,7 @@ trainer.save_state()
 
 
 # Evaluate on validation set
-metrics = trainer.evaluate(prepared_ds['train'])
+metrics = trainer.evaluate(prepared_ds_val['train'])
 trainer.log_metrics("eval", metrics)
 trainer.save_metrics("eval", metrics)
 
