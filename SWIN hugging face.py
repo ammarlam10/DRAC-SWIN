@@ -41,7 +41,8 @@ ds = load_dataset(p)
 ds_val = load_dataset(p_val)
 
 
-print(ds)
+print('TRAIN',ds)
+print('VAL',ds_val)
 
 
 
@@ -74,8 +75,6 @@ prepared_ds = ds_val.with_transform(transform)
 
 # In[18]:
 
-
-print(prepared_ds)
 
 
 # In[19]:
