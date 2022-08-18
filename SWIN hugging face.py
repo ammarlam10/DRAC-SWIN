@@ -69,7 +69,7 @@ def transform(example_batch):
   
 # applying transform
 prepared_ds = ds.with_transform(transform)
-prepared_ds = ds_val.with_transform(transform)
+prepared_ds_val = ds_val.with_transform(transform)
 
 
 
