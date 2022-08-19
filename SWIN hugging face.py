@@ -95,10 +95,10 @@ def collate_fn(batch):
 
 
 
-metric = load_metric("f1",average="macro")
+metric = load_metric("f1",average="average")
 def compute_metrics(p):
   # function which calculates accuracy for a certain set of predictions
-  return metric.compute(predictions=np.argmax(p.predictions, axis=1), references=p.label_ids, average="macro")
+  return metric.compute(predictions=np.argmax(p.predictions, axis=1), references=p.label_ids, average="average")
 
 
 # In[22]:
@@ -131,7 +131,7 @@ lr_scheduler = AdafactorSchedule(optimizer)
 
 # Defining training arguments (set push_to_hub to false if you don't want to upload it to HuggingFace's model hub)
 training_args = TrainingArguments(
-    f"swin-finetuned-DRG_schedule",
+    f"swin-finetuned-DRG-schedule",
     remove_unused_columns=False,
     evaluation_strategy = "steps",
     save_strategy = "steps",
@@ -140,7 +140,7 @@ training_args = TrainingArguments(
     per_device_train_batch_size=batch_size,
     gradient_accumulation_steps=1,
     per_device_eval_batch_size=batch_size,
-    num_train_epochs=30,
+    num_train_epochs=1,
     warmup_ratio=0.1,
     logging_steps=10,
     load_best_model_at_end=True,
@@ -189,10 +189,10 @@ train_results = trainer.train()
 trainer.save_model()
 trainer.log_metrics("train", train_results.metrics)
 trainer.save_metrics("train", train_results.metrics)
-#trainer.save_state()
+trainer.save_state()
 
-with open(r"trainerobj.pickle", "wb") as output_file:
-    pickle.dump(trainer, output_file)
+#with open(r"trainerobj.pickle", "wb") as output_file:
+#    pickle.dump(trainer, output_file)
 
 # In[ ]:
 
