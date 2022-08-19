@@ -10,7 +10,7 @@
 #os.environ['MASTER_ADDR'] = 'localhost'
 #os.environ['MASTER_PORT'] = '5678'
 
-
+import _pickle as cPickle
 
 import datasets
 from transformers import AutoFeatureExtractor
@@ -176,13 +176,22 @@ trainer = Trainer(
 # In[ ]:
 
 
-# Train and save results
-train_results = trainer.train()
-trainer.save_model()
-trainer.log_metrics("train", train_results.metrics)
-trainer.save_metrics("train", train_results.metrics)
-trainer.save_state()
+#if isinstance(best_acc, torch.Tensor):
+#    trainer.
+#    class_acc_dict['accuracy'] = best_acc.cpu().numpy()
+#else:
+#    class_acc_dict['accuracy'] = best_acc
 
+
+# Train and save results
+#train_results = trainer.train()
+#trainer.save_model()
+#trainer.log_metrics("train", train_results.metrics)
+#trainer.save_metrics("train", train_results.metrics)
+#trainer.save_state()
+
+with open(r"trainerobj.pickle", "wb") as output_file:
+    cPickle.dump(trainer, output_file)
 
 # In[ ]:
 
