@@ -9,8 +9,9 @@
 
 #os.environ['MASTER_ADDR'] = 'localhost'
 #os.environ['MASTER_PORT'] = '5678'
+import dill as pickle
 
-import _pickle as cPickle
+#import _pickle as cPickle
 
 import datasets
 from transformers import AutoFeatureExtractor
@@ -130,7 +131,7 @@ lr_scheduler = AdafactorSchedule(optimizer)
 
 # Defining training arguments (set push_to_hub to false if you don't want to upload it to HuggingFace's model hub)
 training_args = TrainingArguments(
-    f"swin-finetuned-DRG",
+    f"swin-finetuned-DRG_schedule",
     remove_unused_columns=False,
     evaluation_strategy = "steps",
     save_strategy = "steps",
@@ -184,14 +185,14 @@ trainer = Trainer(
 
 
 # Train and save results
-#train_results = trainer.train()
-#trainer.save_model()
-#trainer.log_metrics("train", train_results.metrics)
-#trainer.save_metrics("train", train_results.metrics)
+train_results = trainer.train()
+trainer.save_model()
+trainer.log_metrics("train", train_results.metrics)
+trainer.save_metrics("train", train_results.metrics)
 #trainer.save_state()
 
 with open(r"trainerobj.pickle", "wb") as output_file:
-    cPickle.dump(trainer, output_file)
+    pickle.dump(trainer, output_file)
 
 # In[ ]:
 
