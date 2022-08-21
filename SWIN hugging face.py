@@ -98,7 +98,7 @@ def collate_fn(batch):
 metric = load_metric("f1",average="average")
 def compute_metrics(p):
   # function which calculates accuracy for a certain set of predictions
-  return metric.compute(predictions=np.argmax(p.predictions, axis=1), references=p.label_ids, average="average")
+  return metric.compute(predictions=np.argmax(p.predictions, axis=1), references=p.label_ids, average="weighted")
 
 
 # In[22]:
