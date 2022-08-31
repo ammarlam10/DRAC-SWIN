@@ -109,7 +109,8 @@ class DRG(datasets.GeneratorBasedBuilder):
 
             df= pd.read_csv(csv_path)
             print(df.shape[0])
-            for k,v in df.iloc[:-100].iterrows():
+            #for k,v in df.iloc[:-100].iterrows():
+            for k,v in df.iterrows():
                 # print(v['image name'])
                 # print(v['DR grade'])
                 # print('{}/{}'.format(imgfolder,v['image name']))
