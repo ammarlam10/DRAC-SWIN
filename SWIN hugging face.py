@@ -33,6 +33,26 @@ from transformers import EarlyStoppingCallback, IntervalStrategy
 # In[3]:
 
 
+# from torch import nn
+# from transformers import Trainer
+from focal_loss.focal_loss import FocalLoss
+
+
+class focalTrainer(Trainer):
+    def compute_loss(self, model, inputs, return_outputs=False):
+        labels = inputs.get("labels")
+        # forward pass
+        outputs = model(**inputs)
+        logits = outputs.get("logits")
+        # compute custom loss (suppose one has 3 labels with different weights)
+       # loss_fct = nn.CrossEntropyLoss(weight=torch.tensor([1.0, 2.0, 3.0]))
+        loss_fct = FocalLoss(alpha=2, gamma=5)
+
+        loss = loss_fct(logits.view(-1, self.model.config.num_labels), labels.view(-1))
+        return (loss, outputs) if return_outputs else loss
+
+
+
 p = '/dss/dsshome1/lxc0C/ra49bid2/ammar/DRAC-SWIN/DRG_huggingface'
 p_val = '/dss/dsshome1/lxc0C/ra49bid2/ammar/DRAC-SWIN/DRG_huggingface_val'
 #p ='/dss/dsshome1/lxc0C/ra49bid2/ammar/SWIN/DRG_huggingface'
@@ -161,7 +181,7 @@ training_args = TrainingArguments(
 
 
 # Instantiate the Trainer object
-trainer = Trainer(
+trainer = focalTrainer(
     model=model,
     args=training_args,
     optimizers=(optimizer, lr_scheduler),
