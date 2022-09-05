@@ -48,9 +48,10 @@ class focalTrainer(Trainer):
        # loss_fct = nn.CrossEntropyLoss(weight=torch.tensor([1.0, 2.0, 3.0]))
         loss_fct = FocalLoss(alpha=2, gamma=5)
 
-        loss = loss_fct(logits.view(-1, self.model.config.num_labels), labels.view(-1))
-        return (loss, outputs) if return_outputs else loss
+        #loss = loss_fct(logits.view(-1, self.model.config.num_labels), labels.view(-1))
+        loss = loss_fct(logits, labels)
 
+        return (loss, outputs) if return_outputs else loss
 
 
 p = '/dss/dsshome1/lxc0C/ra49bid2/ammar/DRAC-SWIN/DRG_huggingface'
