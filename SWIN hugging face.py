@@ -113,12 +113,41 @@ def collate_fn(batch):
 
 # In[20]:
 
+def confusion_matrix(rater_a, rater_b, min_rating=None, max_rating=None):
+    assert(len(rater_a) == len(rater_b))
+    if min_rating is None:
+        min_rating = min(rater_a + rater_b)
+    if max_rating is None:
+        max_rating = max(rater_a + rater_b)
+    num_ratings = int(max_rating - min_rating + 1)
+    conf_mat = [[0 for i in range(num_ratings)]
+                for j in range(num_ratings)]
+    for a, b in zip(rater_a, rater_b):
+        conf_mat[a - min_rating][b - min_rating] += 1
+    return conf_mat
 
+
+def histogram(ratings, min_rating=None, max_rating=None):
+    if min_rating is None:
+        min_rating = min(ratings)
+    if max_rating is None:
+        max_rating = max(ratings)
+    num_ratings = int(max_rating - min_rating + 1)
+    hist_ratings = [0 for x in range(num_ratings)]
+    for r in ratings:
+        hist_ratings[r - min_rating] += 1
+    return hist_ratings
 
 
 def quadratic_weighted_kappa(rater_a, rater_b, min_rating=None, max_rating=None):
-    rater_a = np.array(rater_a, dtype=int)
-    rater_b = np.array(rater_b, dtype=int)
+    #print(rater_a)
+    #print(rater_b)
+    #print(type(rater_a))
+    #print(type(rater_b))
+
+
+    #rater_a = np.array(rater_a, dtype=int)
+    #rater_b = np.array(rater_b, dtype=int)
     assert(len(rater_a) == len(rater_b))
     if min_rating is None:
         min_rating = min(min(rater_a), min(rater_b))
@@ -151,8 +180,9 @@ def quadratic_weighted_kappa(rater_a, rater_b, min_rating=None, max_rating=None)
 #metric = load_metric("f1",average="average")
 def compute_metrics(p):
   # function which calculates accuracy for a certain set of predictions
-  return quadratic_weighted_kappa(p.predictions,p.label_ids)
+  return quadratic_weighted_kappa(np.argmax(p.predictions, axis=1),p.label_ids)
 #  return metric.compute(predictions=np.argmax(p.predictions, axis=1), references=p.label_ids, average="weighted")
+
 
 
 
