@@ -115,13 +115,48 @@ def collate_fn(batch):
 
 
 
-metric = load_metric("f1",average="average")
-def compute_metrics(p):
-  # function which calculates accuracy for a certain set of predictions
-  return metric.compute(predictions=np.argmax(p.predictions, axis=1), references=p.label_ids, average="weighted")
+
+def quadratic_weighted_kappa(rater_a, rater_b, min_rating=None, max_rating=None):
+    rater_a = np.array(rater_a, dtype=int)
+    rater_b = np.array(rater_b, dtype=int)
+    assert(len(rater_a) == len(rater_b))
+    if min_rating is None:
+        min_rating = min(min(rater_a), min(rater_b))
+    if max_rating is None:
+        max_rating = max(max(rater_a), max(rater_b))
+    conf_mat = confusion_matrix(rater_a, rater_b, min_rating, max_rating)
+    num_ratings = len(conf_mat)
+    num_scored_items = float(len(rater_a))
+
+    hist_rater_a = histogram(rater_a, min_rating, max_rating)
+    hist_rater_b = histogram(rater_b, min_rating, max_rating)
+
+    numerator = 0.0
+    denominator = 0.0
+
+    for i in range(num_ratings):
+        for j in range(num_ratings):
+            expected_count = (hist_rater_a[i] * hist_rater_b[j] / num_scored_items)
+            d = pow(i - j, 2.0) / pow(num_ratings - 1, 2.0)
+            numerator += d * conf_mat[i][j] / num_scored_items
+            denominator += d * expected_count / num_scored_items
+    return 1.0 - numerator / denominator
 
 
 # In[22]:
+
+
+
+
+#metric = load_metric("f1",average="average")
+def compute_metrics(p):
+  # function which calculates accuracy for a certain set of predictions
+  return quadratic_weighted_kappa(p.predictions,p.label_ids)
+#  return metric.compute(predictions=np.argmax(p.predictions, axis=1), references=p.label_ids, average="weighted")
+
+
+
+
 
 
 
@@ -153,18 +188,18 @@ lr_scheduler = AdafactorSchedule(optimizer)
 training_args = TrainingArguments(
     f"swin-finetuned-DRG-schedule",
     remove_unused_columns=False,
-    #evaluation_strategy = "steps",
-    #save_strategy = "steps",
+    evaluation_strategy = "steps",
+    save_strategy = "steps",
     #learning_rate=scheduler,
-    #eval_steps = 5,
+    eval_steps = 5,
     per_device_train_batch_size=batch_size,
     gradient_accumulation_steps=1,
     #per_device_eval_batch_size=batch_size,
     num_train_epochs=18.75,
     warmup_ratio=0.1,
     logging_steps=9999999,
-    load_best_model_at_end=False,
-    metric_for_best_model="f1",
+    load_best_model_at_end=True,
+    #metric_for_best_model="f1",
     push_to_hub=False,
     fp16=True,)
 
@@ -186,7 +221,7 @@ trainer = focalTrainer(
     optimizers=(optimizer, lr_scheduler),
     data_collator=collate_fn,
     compute_metrics=compute_metrics,
-    #callbacks = [EarlyStoppingCallback(early_stopping_patience=5)],
+    callbacks = [EarlyStoppingCallback(early_stopping_patience=5)],
     train_dataset=prepared_ds["train"],
     eval_dataset=prepared_ds_val["train"],
     tokenizer=feature_extractor,
