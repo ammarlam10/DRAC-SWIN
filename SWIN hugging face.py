@@ -181,12 +181,12 @@ def quadratic_weighted_kappa(rater_a, rater_b, min_rating=None, max_rating=None)
 
 
 
-#metric = load_metric("f1",average="average")
+metric = load_metric("f1",average="average")
 cohenkappa = CohenKappa(num_classes=2)
 def compute_metrics(p):
   # function which calculates accuracy for a certain set of predictions
-  return quadratic_weighted_kappa(np.argmax(p.predictions, axis=1),p.label_ids)
-#  return metric.compute(predictions=np.argmax(p.predictions, axis=1), references=p.label_ids, average="weighted")
+  #return quadratic_weighted_kappa(np.argmax(p.predictions, axis=1),p.label_ids)
+  return metric.compute(predictions=np.argmax(p.predictions, axis=1), references=p.label_ids, average="weighted")
 
 
 
@@ -234,7 +234,7 @@ training_args = TrainingArguments(
     warmup_ratio=0.1,
     logging_steps=9999999,
     load_best_model_at_end=True,
-    #metric_for_best_model="f1",
+    metric_for_best_model="f1",
     push_to_hub=False,
     fp16=True,)
 
