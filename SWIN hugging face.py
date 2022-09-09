@@ -38,6 +38,8 @@ from kornia.losses import focal
 from focal_loss.focal_loss import FocalLoss
 from torchmetrics import CohenKappa
 
+from cohen_kappa import cohen
+
 
 
 class focalTrainer(Trainer):
@@ -48,7 +50,8 @@ class focalTrainer(Trainer):
         logits = outputs.get("logits")
         # compute custom loss (suppose one has 3 labels with different weights)
        # loss_fct = nn.CrossEntropyLoss(weight=torch.tensor([1.0, 2.0, 3.0]))
-        loss_fct = CohenKappa(num_classes=3).cuda()
+        loss_fct = cohen().cuda()
+        #CohenKappa(num_classes=3).cuda()
         #loss_fct = FocalLoss(alpha=2, gamma=5)
         #loss = loss_fct(logits.view(-1, self.model.config.num_labels), labels.view(-1))
         #loss = focal.focal_loss(logits, labels,alpha=0.1, gamma=2)
