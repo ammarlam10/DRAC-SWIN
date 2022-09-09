@@ -70,7 +70,7 @@ class focalTrainer(Trainer):
         #loss_fct = FocalLoss(alpha=2, gamma=5)
         #loss = loss_fct(logits, labels)
         loss = focal.focal_loss(logits, labels,alpha=0.1, gamma=2)
-        loss = loss_fct(logits.argmax(1), labels)
+        #loss = loss_fct(logits.argmax(1), labels)
         #modified_target = torch.zeros_like(logits)
         
         #predictions = (torch.sigmoid(logits) > 0.5).cumprod(axis=1)
