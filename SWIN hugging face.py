@@ -48,7 +48,7 @@ def ordinal_regression(predictions, targets):
 
     # Create out modified target with [batch_size, num_labels] shape
     modified_target = torch.zeros_like(predictions)
-    predictions = (torch.sigmoid(logits) > 0.5).cumprod(axis=1)
+    predictions = (torch.sigmoid(predictions) > 0.5).cumprod(axis=1)
     # Fill in ordinal target function, i.e. 0 -> [1,0,0,...]
     for i, target in enumerate(targets):
         modified_target[i, 0:target+1] = 1
