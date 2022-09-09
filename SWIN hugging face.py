@@ -33,7 +33,7 @@ from transformers import EarlyStoppingCallback, IntervalStrategy
 # In[3]:
 from kornia.losses import focal
 
-# from torch import nn
+from torch import nn
 # from transformers import Trainer
 from focal_loss.focal_loss import FocalLoss
 from torchmetrics import CohenKappa
