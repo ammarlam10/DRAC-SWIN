@@ -36,6 +36,8 @@ from kornia.losses import focal
 # from torch import nn
 # from transformers import Trainer
 from focal_loss.focal_loss import FocalLoss
+from torchmetrics import CohenKappa
+
 
 
 class focalTrainer(Trainer):
@@ -46,9 +48,11 @@ class focalTrainer(Trainer):
         logits = outputs.get("logits")
         # compute custom loss (suppose one has 3 labels with different weights)
        # loss_fct = nn.CrossEntropyLoss(weight=torch.tensor([1.0, 2.0, 3.0]))
-        loss_fct = FocalLoss(alpha=2, gamma=5)
+        loss_fct = CohenKappa(num_classes=3)
+        #loss_fct = FocalLoss(alpha=2, gamma=5)
         #loss = loss_fct(logits.view(-1, self.model.config.num_labels), labels.view(-1))
-        loss = focal.focal_loss(logits, labels,alpha=0.1, gamma=2)
+        #loss = focal.focal_loss(logits, labels,alpha=0.1, gamma=2)
+        loss = loss_fct(logits.argmax(0), labels)
 
         return (loss, outputs) if return_outputs else loss
 
@@ -178,6 +182,7 @@ def quadratic_weighted_kappa(rater_a, rater_b, min_rating=None, max_rating=None)
 
 
 #metric = load_metric("f1",average="average")
+cohenkappa = CohenKappa(num_classes=2)
 def compute_metrics(p):
   # function which calculates accuracy for a certain set of predictions
   return quadratic_weighted_kappa(np.argmax(p.predictions, axis=1),p.label_ids)
