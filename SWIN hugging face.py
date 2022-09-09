@@ -52,7 +52,7 @@ class focalTrainer(Trainer):
         #loss_fct = FocalLoss(alpha=2, gamma=5)
         #loss = loss_fct(logits.view(-1, self.model.config.num_labels), labels.view(-1))
         #loss = focal.focal_loss(logits, labels,alpha=0.1, gamma=2)
-        loss = loss_fct(logits.argmax(0), labels)
+        loss = loss_fct(logits.argmax(1), labels)
 
         return (loss, outputs) if return_outputs else loss
 
