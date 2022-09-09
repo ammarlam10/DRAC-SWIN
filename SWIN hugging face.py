@@ -71,7 +71,14 @@ class focalTrainer(Trainer):
         #loss = loss_fct(logits.view(-1, self.model.config.num_labels), labels.view(-1))
         #loss = focal.focal_loss(logits, labels,alpha=0.1, gamma=2)
         #loss = loss_fct(logits.argmax(1), labels)
-        loss = ordinal_regression(logits, labels)
+        modified_target = torch.zeros_like(logits)
+        predictions = (torch.sigmoid(logits) > 0.5).cumprod(axis=1)
+        # Fill in ordinal target function, i.e. 0 -> [1,0,0,...]
+        for i, target in enumerate(labels):
+            modified_target[i, 0:target+1] = 1
+
+        loss_fct = nn.MSELoss()        
+        loss = loss_fct(predictions, modified_target)
 
         return (loss, outputs) if return_outputs else loss
 
