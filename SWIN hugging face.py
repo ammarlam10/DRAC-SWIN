@@ -79,7 +79,7 @@ class focalTrainer(Trainer):
             modified_target[i, 0:target+1] = 1
 
         loss_fct = nn.MSELoss().cuda()        
-        loss = loss_fct(predictions.cuda(), modified_target.cuda())
+        loss = loss_fct(predictions.float(), modified_target.float())
 
         return (loss, outputs) if return_outputs else loss
 
