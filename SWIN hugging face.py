@@ -63,7 +63,7 @@ class focalTrainer(Trainer):
         outputs = model(**inputs)
         logits = outputs.get("logits")
         # compute custom loss (suppose one has 3 labels with different weights)
-        loss_fct = nn.CrossEntropyLoss(weight=torch.tensor([1.0, 2.0, 3.0])).cuda()
+        #loss_fct = nn.CrossEntropyLoss(weight=torch.tensor([1.0, 2.0, 3.0])).cuda()
         #loss_fct = cohen().cuda()
 
         #CohenKappa(num_classes=3).cuda()
@@ -71,15 +71,15 @@ class focalTrainer(Trainer):
         loss = loss_fct(logits, labels)
         #loss = focal.focal_loss(logits, labels,alpha=0.1, gamma=2)
         #loss = loss_fct(logits.argmax(1), labels)
-        #modified_target = torch.zeros_like(logits)
+        modified_target = torch.zeros_like(logits)
         
-        #predictions = (torch.sigmoid(logits) > 0.5).cumprod(axis=1)
+        predictions = (torch.sigmoid(logits) > 0.5).cumprod(axis=1)
         # Fill in ordinal target function, i.e. 0 -> [1,0,0,...]
-       # for i, target in enumerate(labels):
-       #     modified_target[i, 0:target+1] = 1
+        for i, target in enumerate(labels):
+            modified_target[i, 0:target+1] = 1
 
-        #loss_fct = nn.MSELoss()        
-        #loss = loss_fct(predictions, modified_target)
+        loss_fct = nn.MSELoss().cuda()        
+        loss = loss_fct(predictions.cuda(), modified_target.cuda())
 
         return (loss, outputs) if return_outputs else loss
 
