@@ -56,6 +56,7 @@ def ordinal_regression(predictions, targets):
     return nn.MSELoss()(predictions, modified_target)
 #.sum(axis=1)
 
+'''
 class focalTrainer(Trainer):
     def compute_loss(self, model, inputs, return_outputs=False):
         labels = inputs.get("labels")
@@ -82,7 +83,7 @@ class focalTrainer(Trainer):
         #loss = loss_fct(predictions.float(), modified_target.float())
         loss = loss_fct(logits, labels)
         return (loss, outputs) if return_outputs else loss
-
+'''
 
 p = '/dss/dsshome1/lxc0C/ra49bid2/ammar/DRAC-SWIN/DRG_huggingface'
 p_val = '/dss/dsshome1/lxc0C/ra49bid2/ammar/DRAC-SWIN/DRG_huggingface_val'
@@ -209,7 +210,7 @@ def quadratic_weighted_kappa(rater_a, rater_b, min_rating=None, max_rating=None)
 
 
 metric = load_metric("f1",average="average")
-cohenkappa = CohenKappa(num_classes=2)
+#cohenkappa = CohenKappa(num_classes=2)
 def compute_metrics(p):
   # function which calculates accuracy for a certain set of predictions
   #return quadratic_weighted_kappa(np.argmax(p.predictions, axis=1),p.label_ids)
@@ -257,7 +258,7 @@ training_args = TrainingArguments(
     per_device_train_batch_size=batch_size,
     gradient_accumulation_steps=1,
     #per_device_eval_batch_size=batch_size,
-    num_train_epochs=18.75,
+    num_train_epochs=60,
     warmup_ratio=0.1,
     logging_steps=9999999,
     load_best_model_at_end=True,
