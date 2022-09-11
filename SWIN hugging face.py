@@ -56,7 +56,7 @@ def ordinal_regression(predictions, targets):
     return nn.MSELoss()(predictions, modified_target)
 #.sum(axis=1)
 
-'''
+
 class focalTrainer(Trainer):
     def compute_loss(self, model, inputs, return_outputs=False):
         labels = inputs.get("labels")
@@ -70,20 +70,20 @@ class focalTrainer(Trainer):
         #CohenKappa(num_classes=3).cuda()
         #loss_fct = FocalLoss(alpha=2, gamma=5)
         #loss = loss_fct(logits, labels)
-        #loss = focal.focal_loss(logits, labels,alpha=0.1, gamma=2)
+        loss = focal.focal_loss(logits, labels,alpha=0.25, gamma=2)
         #loss = loss_fct(logits.argmax(1), labels)
-        modified_target = torch.zeros_like(logits)
+        #modified_target = torch.zeros_like(logits)
         
-        predictions = (torch.sigmoid(logits) > 0.5).cumprod(axis=1)
+        #predictions = (torch.sigmoid(logits) > 0.5).cumprod(axis=1)
         # Fill in ordinal target function, i.e. 0 -> [1,0,0,...]
-        for i, target in enumerate(labels):
-            modified_target[i, 0:target+1] = 1
+        #for i, target in enumerate(labels):
+        #    modified_target[i, 0:target+1] = 1
 
-        loss_fct = nn.MSELoss().cuda()        
+        #loss_fct = nn.MSELoss().cuda()        
         #loss = loss_fct(predictions.float(), modified_target.float())
-        loss = loss_fct(logits, labels)
+        #loss = loss_fct(logits, labels)
         return (loss, outputs) if return_outputs else loss
-'''
+
 
 p = '/dss/dsshome1/lxc0C/ra49bid2/ammar/DRAC-SWIN/DRG_huggingface'
 p_val = '/dss/dsshome1/lxc0C/ra49bid2/ammar/DRAC-SWIN/DRG_huggingface_val'
@@ -285,7 +285,7 @@ trainer = Trainer(
     optimizers=(optimizer, lr_scheduler),
     data_collator=collate_fn,
     compute_metrics=compute_metrics,
-    callbacks = [EarlyStoppingCallback(early_stopping_patience=5)],
+    callbacks = [EarlyStoppingCallback(early_stopping_patience=2)],
     train_dataset=prepared_ds["train"],
     eval_dataset=prepared_ds_val["train"],
     tokenizer=feature_extractor,
