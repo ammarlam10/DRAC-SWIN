@@ -83,7 +83,7 @@ class focalTrainer(Trainer):
         loss = loss_fct(predictions.float(), modified_target.float())
         loss = Variable(loss, requires_grad = True)
         #loss = loss_fct(logits, labels)
-        
+
         return (loss, outputs) if return_outputs else loss
 
 
@@ -255,7 +255,7 @@ training_args = TrainingArguments(
     remove_unused_columns=False,
     evaluation_strategy = "steps",
     save_strategy = "steps",
-    learning_rate=scheduler,
+    #learning_rate=scheduler,
     eval_steps = 5,
     per_device_train_batch_size=batch_size,
     gradient_accumulation_steps=1,
