@@ -236,13 +236,13 @@ model = SwinForImageClassification.from_pretrained(
 
 
 # In[33]:
-#for param in model.swin.embeddings.parameters():
-#    param.requires_grad = False
+for param in model.swin.embeddings.parameters():
+    param.requires_grad = False
 
 #for param in model.swin.encoder.parameters():
 #   param.requires_grad = False
 
-batch_size = 16
+batch_size = 8
 
 optimizer = Adafactor(model.parameters(), scale_parameter=True, relative_step=True, warmup_init=True, lr=None)
 lr_scheduler = AdafactorSchedule(optimizer)
