@@ -251,18 +251,18 @@ lr_scheduler = AdafactorSchedule(optimizer)
 training_args = TrainingArguments(
     f"swin-finetuned-DRG-schedule",
     remove_unused_columns=False,
-    evaluation_strategy = "steps",
+    #evaluation_strategy = "steps",
     save_strategy = "steps",
     #learning_rate=scheduler,
-    eval_steps = 5,
+    #eval_steps = 5,
     per_device_train_batch_size=batch_size,
     gradient_accumulation_steps=1,
     #per_device_eval_batch_size=batch_size,
     num_train_epochs=16,
     warmup_ratio=0.1,
     logging_steps=9999999,
-    load_best_model_at_end=True,
-    metric_for_best_model="f1",
+    load_best_model_at_end=False,
+    #metric_for_best_model="f1",
     push_to_hub=False,
     fp16=True,)
 
@@ -287,7 +287,7 @@ trainer = Trainer(
     compute_metrics=compute_metrics,
     callbacks = [EarlyStoppingCallback(early_stopping_patience=2)],
     train_dataset=prepared_ds["train"],
-    eval_dataset=prepared_ds_val["train"],
+    #eval_dataset=prepared_ds_val["train"],
     tokenizer=feature_extractor,
 )
 
