@@ -56,7 +56,7 @@ def ordinal_regression(predictions, targets):
     return nn.MSELoss()(predictions, modified_target)
 #.sum(axis=1)
 
-
+from torch.autograd import Variable
 class focalTrainer(Trainer):
     def compute_loss(self, model, inputs, return_outputs=False):
         labels = inputs.get("labels")
@@ -70,18 +70,20 @@ class focalTrainer(Trainer):
         #CohenKappa(num_classes=3).cuda()
         #loss_fct = FocalLoss(alpha=2, gamma=5)
         #loss = loss_fct(logits, labels)
-        loss = focal.focal_loss(logits, labels,alpha=0.25, gamma=2)
+        #loss = focal.focal_loss(logits, labels,alpha=0.25, gamma=2)
         #loss = loss_fct(logits.argmax(1), labels)
-        #modified_target = torch.zeros_like(logits)
+        modified_target = torch.zeros_like(logits)
         
-        #predictions = (torch.sigmoid(logits) > 0.5).cumprod(axis=1)
+        predictions = (torch.sigmoid(logits) > 0.5).cumprod(axis=1)
         # Fill in ordinal target function, i.e. 0 -> [1,0,0,...]
-        #for i, target in enumerate(labels):
-        #    modified_target[i, 0:target+1] = 1
+        for i, target in enumerate(labels):
+            modified_target[i, 0:target+1] = 1
 
-        #loss_fct = nn.MSELoss().cuda()        
-        #loss = loss_fct(predictions.float(), modified_target.float())
+        loss_fct = nn.MSELoss().cuda()        
+        loss = loss_fct(predictions.float(), modified_target.float())
+        loss = Variable(loss, requires_grad = True)
         #loss = loss_fct(logits, labels)
+        
         return (loss, outputs) if return_outputs else loss
 
 
@@ -251,18 +253,18 @@ lr_scheduler = AdafactorSchedule(optimizer)
 training_args = TrainingArguments(
     f"swin-finetuned-DRG-schedule",
     remove_unused_columns=False,
-    #evaluation_strategy = "steps",
+    evaluation_strategy = "steps",
     save_strategy = "steps",
-    #learning_rate=scheduler,
-    #eval_steps = 5,
+    learning_rate=scheduler,
+    eval_steps = 5,
     per_device_train_batch_size=batch_size,
     gradient_accumulation_steps=1,
     #per_device_eval_batch_size=batch_size,
-    num_train_epochs=16,
+    num_train_epochs=30,
     warmup_ratio=0.1,
     logging_steps=9999999,
-    load_best_model_at_end=False,
-    #metric_for_best_model="f1",
+    load_best_model_at_end=True,
+    metric_for_best_model="f1",
     push_to_hub=False,
     fp16=True,)
 
