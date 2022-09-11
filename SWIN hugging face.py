@@ -236,8 +236,8 @@ model = SwinForImageClassification.from_pretrained(
 
 
 # In[33]:
-for param in model.swin.embeddings.parameters():
-    param.requires_grad = False
+#for param in model.swin.embeddings.parameters():
+#    param.requires_grad = False
 
 #for param in model.swin.encoder.parameters():
 #   param.requires_grad = False
@@ -258,7 +258,7 @@ training_args = TrainingArguments(
     per_device_train_batch_size=batch_size,
     gradient_accumulation_steps=1,
     #per_device_eval_batch_size=batch_size,
-    num_train_epochs=60,
+    num_train_epochs=16,
     warmup_ratio=0.1,
     logging_steps=9999999,
     load_best_model_at_end=True,
