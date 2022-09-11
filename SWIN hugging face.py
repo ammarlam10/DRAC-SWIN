@@ -280,8 +280,8 @@ training_args = TrainingArguments(
 
 
 # Instantiate the Trainer object
-#trainer = focalTrainer(
-trainer = Trainer(
+trainer = focalTrainer(
+#trainer = Trainer(
     model=model,
     args=training_args,
     optimizers=(optimizer, lr_scheduler),
@@ -289,7 +289,7 @@ trainer = Trainer(
     compute_metrics=compute_metrics,
     callbacks = [EarlyStoppingCallback(early_stopping_patience=2)],
     train_dataset=prepared_ds["train"],
-    #eval_dataset=prepared_ds_val["train"],
+    eval_dataset=prepared_ds_val["train"],
     tokenizer=feature_extractor,
 )
 
