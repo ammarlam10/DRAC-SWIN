@@ -119,6 +119,6 @@ class DRG(datasets.GeneratorBasedBuilder):
 
                 yield v['image name'], {
                                 "img": im,
-                                #"label": v['image quality level'],
-                                "label": v['DR grade'],
+                                "label": v['image quality level'],
+                                #"label": v['DR grade'],
                             }
