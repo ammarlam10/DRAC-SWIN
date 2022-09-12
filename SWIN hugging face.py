@@ -280,8 +280,8 @@ training_args = TrainingArguments(
 
 
 # Instantiate the Trainer object
-trainer = focalTrainer(
-#trainer = Trainer(
+#trainer = focalTrainer(
+trainer = Trainer(
     model=model,
     args=training_args,
     optimizers=(optimizer, lr_scheduler),
